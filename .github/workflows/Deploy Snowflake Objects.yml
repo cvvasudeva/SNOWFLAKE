@@ -11,42 +11,30 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Install Snowflake CLI
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y curl gnupg
+      - uses: snowflakedb/snowflake-cli-action@v1
 
-          curl -fsSL https://sfc-repo.snowflakecomputing.com/snowsql/linux_pubkey.gpg \
-          | sudo gpg --dearmor -o /usr/share/keyrings/snowsql.gpg
-
-          echo "deb [signed-by=/usr/share/keyrings/snowsql.gpg] https://sfc-repo.snowflakecomputing.com/snowsql/bootstrap/deb stable main" \
-          | sudo tee /etc/apt/sources.list.d/snowsql.list
-
-          sudo apt-get update
-          sudo apt-get install -y snowsql
-
-          snowsql --version
-
-      - name: Execute SQL Script
+      - name: Execute SQL
         env:
-          SNOWSQL_ACCOUNT: ${{ secrets.SNOWFLAKE_ACCOUNT }}
-          SNOWSQL_USER: ${{ secrets.SNOWFLAKE_USER }}
-          SNOWSQL_PWD: ${{ secrets.SNOWFLAKE_PASSWORD }}
-          SNOWSQL_ROLE: ${{ secrets.SNOWFLAKE_ROLE }}
-          SNOWSQL_WAREHOUSE: ${{ secrets.SNOWFLAKE_WAREHOUSE }}
-          SNOWSQL_DATABASE: ${{ secrets.SNOWFLAKE_DATABASE }}
-          SNOWSQL_SCHEMA: ${{ secrets.SNOWFLAKE_SCHEMA }}
+          SNOWFLAKE_ACCOUNT: ${{ secrets.SNOWFLAKE_ACCOUNT }}
+          SNOWFLAKE_USER: ${{ secrets.SNOWFLAKE_USER }}
+          SNOWFLAKE_PASSWORD: ${{ secrets.SNOWFLAKE_PASSWORD }}
 
         run: |
-          snowsql \
-            -a RQVFAHA-BQ57083 \
-            -u VASUDEVASFD1 \
-            -p "Vasudeva.sfd@2" \
-            -r ACCOUNTADMIN \
-            -w COMPUTE_WH \
-            -d MY_DB \
-            -s MY_SCHEMA \
-            -f sql/create_emp_practice_table.sql
+          snow sql \
+            --account $SNOWFLAKE_ACCOUNT \
+            --user $SNOWFLAKE_USER \
+            --password "$SNOWFLAKE_PASSWORD" \
+            --query "
+            USE ROLE ACCOUNTADMIN;
+            USE WAREHOUSE COMPUTE_WH;
+            USE DATABASE MY_DB;
+            USE SCHEMA MY_SCHEMA;
+            "
+
+          snow sql \
+            --account $SNOWFLAKE_ACCOUNT \
+            --user $SNOWFLAKE_USER \
+            --password "$SNOWFLAKE_PASSWORD" \
+            --filename sql/create_emp_practice_table.sql

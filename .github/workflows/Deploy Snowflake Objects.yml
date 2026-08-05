@@ -41,7 +41,7 @@ jobs:
 
           cur = conn.cursor()
 
-          with open("sql/create_emp_practice_table.sql", "r") as f:
+          with open("deploy\V1.1.1__Initial_Object.sql", "r") as f:
               sql_script = f.read()
 
           for statement in sql_script.split(";"):

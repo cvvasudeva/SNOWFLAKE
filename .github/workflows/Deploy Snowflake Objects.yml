@@ -31,10 +31,11 @@ jobs:
 
         run: |
           snowsql \
-            -a $SNOWSQL_ACCOUNT \
-            -u $SNOWSQL_USER \
-            -r $SNOWSQL_ROLE \
-            -w $SNOWSQL_WAREHOUSE \
-            -d $SNOWSQL_DATABASE \
-            -s $SNOWSQL_SCHEMA \
+            -a RQVFAHA-BQ57083 \
+            -u VASUDEVASFD1 \
+            -p "Vasudeva.sfd@2" \
+            -r ACCOUNTADMIN \
+            -w COMPUTE_WH \
+            -d MY_DB \
+            -s MY_SCHEMA \
             -f sql/create_emp_practice_table.sql

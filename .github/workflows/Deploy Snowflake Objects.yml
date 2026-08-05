@@ -6,40 +6,40 @@ on:
       - main
       - dev
 
+
 jobs:
+
   deploy:
+
     runs-on: ubuntu-latest
 
+
     steps:
-      - uses: actions/checkout@v4
 
-      - uses: snowflakedb/snowflake-cli-action@v3
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
         with:
-         cli-version: "3.16"
+          python-version: "3.11"
 
-      - name: Execute SQL
+
+      - name: Install Snowflake Connector
+        run: |
+          pip install snowflake-connector-python
+
+
+      - name: Deploy SQL To Snowflake
         env:
-          SNOWSQL_ACCOUNT: ${{ secrets.SNOWFLAKE_ACCOUNT }}
-          SNOWSQL_USER: ${{ secrets.SNOWFLAKE_USER }}
-          SNOWSQL_PWD: ${{ secrets.SNOWFLAKE_PASSWORD }}
-          SNOWSQL_ROLE: ${{ secrets.SNOWFLAKE_ROLE }}
-          SNOWSQL_WAREHOUSE: ${{ secrets.SNOWFLAKE_WAREHOUSE }}
-          SNOWSQL_DATABASE: ${{ secrets.SNOWFLAKE_DATABASE }}
-          SNOWSQL_SCHEMA: ${{ secrets.SNOWFLAKE_SCHEMA }}
+          SNOWFLAKE_ACCOUNT: ${{ secrets.SNOWFLAKE_ACCOUNT }}
+          SNOWFLAKE_USER: ${{ secrets.SNOWFLAKE_USER }}
+          SNOWFLAKE_PASSWORD: ${{ secrets.SNOWFLAKE_PASSWORD }}
+          SNOWFLAKE_ROLE: ${{ secrets.SNOWFLAKE_ROLE }}
+          SNOWFLAKE_WAREHOUSE: ${{ secrets.SNOWFLAKE_WAREHOUSE }}
+          SNOWFLAKE_DATABASE: ${{ secrets.SNOWFLAKE_DATABASE }}
+          SNOWFLAKE_SCHEMA: ${{ secrets.SNOWFLAKE_SCHEMA }}
 
         run: |
-          snow sql \
-            --account "$SNOWSQL_ACCOUNT" \
-            --user "$SNOWSQL_USER" \
-            --password "$SNOWSQL_PWD" \
-            --query "
-              USE ROLE $SNOWSQL_ROLE;
-              USE WAREHOUSE $SNOWSQL_WAREHOUSE;
-              USE DATABASE $SNOWSQL_DATABASE;
-              USE SCHEMA $SNOWSQL_SCHEMA;
-              "
-          snow sql \
-              --account "$SNOWSQL_ACCOUNT" \
-              --user "$SNOWSQL_USER" \
-              --password "$SNOWSQL_PWD" \
-              --filename sql/create_emp_practice_table.sql
+          python scripts/deploy.py

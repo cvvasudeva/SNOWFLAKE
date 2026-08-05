@@ -1,26 +1,80 @@
-CREATE OR REPLACE DATABASE ERICSSON;
-CREATE OR REPLACE SCHEMA ERICSSON_SCHEMA;
 
--- Create Table
-CREATE OR REPLACE TABLE EMPLOYEE
+
+CREATE OR REPLACE DATABASE DEMO_DB;
+USE DATABASE DEMO_DB;
+
+CREATE OR REPLACE SCHEMA DEMO_SCHEMA;
+USE SCHEMA DEMO_SCHEMA;
+
+
+create or replace storage integration s3_int
+  type = external_stage
+  storage_provider = 's3'
+  enabled = true
+  storage_aws_role_arn = 'arn:aws:iam::039108689921:role/AWS_ROLE2026'
+  storage_allowed_locations = ('s3://s3bucketsflocation/CSV/');
+
+
+create or replace file format csv_format
+  type = csv
+  field_delimiter = ','
+  skip_header = 1
+  field_optionally_enclosed_by = '"'
+  null_if = ('', 'NULL')
+  empty_field_as_null = true;
+
+ create or replace stage s3_stage
+  url = 's3://s3bucketsflocation/CSV/'
+  storage_integration = s3_int
+  file_format = csv_format;
+
+CREATE OR REPLACE TABLE EMP_STAGE
 (
     EMP_ID INT,
-    EMP_NAME VARCHAR,
-    SALARY INT,
-    UPDATEON TIMESTAMP_NTZ DEFAULT CURRENT_TIMESTAMP()
+    EMP_NAME STRING,
+    SALARY NUMBER
 );
 
--- Insert Sample Records
-INSERT INTO EMPLOYEE (EMP_ID, EMP_NAME, SALARY)
-VALUES
-    (10, 'John', 50000),
-    (102, 'David', 60000),
-    (103, 'Smith', 55000),
-    (107, 'Alice', 70000),
-    (1075675, 'Robert', 65000),
-    (1076654, 'Emma', 72000),
-    (1077234, 'Michael', 58000),
-    (1078987, 'Sophia', 80000),
-    (1079231, 'James', 62000),
-    (1170765, 'Olivia', 75000);
+CREATE OR REPLACE PIPE emp_pipp
+AUTO_INGEST = TRUE
+AS
+COPY INTO EMP_STAGE
+FROM @S3_STAGE
+FILE_FORMAT = (FORMAT_NAME = CSV_FORMAT)
+ON_ERROR = CONTINUE;
+
+CREATE OR REPLACE STREAM EMP_STREAM
+ON TABLE EMP_STAGE;
+
+CREATE OR REPLACE TABLE EMP_MASTER
+(
+    EMP_ID INT,
+    EMP_NAME STRING,
+    SALARY NUMBER,
+    LOAD_DATE TIMESTAMP DEFAULT CURRENT_TIMESTAMP()
+);
+
+CREATE OR REPLACE TASK LOAD_EMP_TASK
+WAREHOUSE = COMPUTE_WH
+SCHEDULE = '1 MINUTE'
+WHEN
+SYSTEM$STREAM_HAS_DATA('EMP_STREAM')
+AS
+
+INSERT INTO EMP_MASTER
+(
+    EMP_ID,
+    EMP_NAME,
+    SALARY
+)
+SELECT
+    EMP_ID,
+    EMP_NAME,
+    SALARY
+FROM EMP_STREAM;
+
+ALTER TASK LOAD_EMP_TASK RESUME;
+
+
+
 

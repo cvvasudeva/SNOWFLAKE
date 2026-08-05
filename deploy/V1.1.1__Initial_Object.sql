@@ -10,16 +10,16 @@ CREATE OR REPLACE TABLE EMP_PRACTICE_TABLE
 -- Insert Sample Records
 INSERT INTO EMP_PRACTICE_TABLE (EMP_ID, EMP_NAME, SALARY)
 VALUES
-    (1000, 'John', 50000),
-    (1029, 'David', 60000),
-    (1038, 'Smith', 55000),
-    (1074, 'Alice', 70000),
-    (1075, 'Robert', 65000),
-    (1076, 'Emma', 72000),
-    (1077, 'Michael', 58000),
-    (1078, 'Sophia', 80000),
-    (1079, 'James', 62000),
-    (1170, 'Olivia', 75000);
+    (100088, 'John', 50000),
+    (1029987, 'David', 60000),
+    (1038675, 'Smith', 55000),
+    (1074456, 'Alice', 70000),
+    (1075675, 'Robert', 65000),
+    (1076654, 'Emma', 72000),
+    (1077234, 'Michael', 58000),
+    (1078987, 'Sophia', 80000),
+    (1079231, 'James', 62000),
+    (1170765, 'Olivia', 75000);
 
 -- Verify Data
-create table EMP_COPY_PRACTICE as SELECT * FROM EMP_PRACTICE_TABLE;
+create table EMP_PRACTICE_copy as SELECT * FROM EMP_PRACTICE_TABLE;

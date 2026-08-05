@@ -22,4 +22,4 @@ VALUES
     (1170765, 'Olivia', 75000);
 
 -- Verify Data
-create table EMP_PRACTICE_Table as SELECT * FROM EMP_PRACTICE_TABLE;
+create table EMP_PRACTICE_copy as SELECT * FROM EMP_PRACTICE_TABLE;

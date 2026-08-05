@@ -17,15 +17,19 @@ jobs:
 
       - name: Execute SQL
         env:
-          SNOWFLAKE_ACCOUNT: ${{ secrets.SNOWFLAKE_ACCOUNT }}
-          SNOWFLAKE_USER: ${{ secrets.SNOWFLAKE_USER }}
-          SNOWFLAKE_PASSWORD: ${{ secrets.SNOWFLAKE_PASSWORD }}
+          SNOWSQL_ACCOUNT: ${{ secrets.SNOWFLAKE_ACCOUNT }}
+          SNOWSQL_USER: ${{ secrets.SNOWFLAKE_USER }}
+          SNOWSQL_PWD: ${{ secrets.SNOWFLAKE_PASSWORD }}
+          SNOWSQL_ROLE: ${{ secrets.SNOWFLAKE_ROLE }}
+          SNOWSQL_WAREHOUSE: ${{ secrets.SNOWFLAKE_WAREHOUSE }}
+          SNOWSQL_DATABASE: ${{ secrets.SNOWFLAKE_DATABASE }}
+          SNOWSQL_SCHEMA: ${{ secrets.SNOWFLAKE_SCHEMA }}
 
         run: |
           snow sql \
-            --account $SNOWFLAKE_ACCOUNT \
-            --user $SNOWFLAKE_USER \
-            --password "$SNOWFLAKE_PASSWORD" \
+            -a RQVFAHA-BQ57083 \
+            -u VASUDEVASFD1 \
+            -password "Vasudeva.sfd@2" \
             --query "
             USE ROLE ACCOUNTADMIN;
             USE WAREHOUSE COMPUTE_WH;

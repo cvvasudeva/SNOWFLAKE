@@ -30,9 +30,9 @@ jobs:
           import snowflake.connector
 
           conn = snowflake.connector.connect(
-              account="YOUR_ACCOUNT_IDENTIFIER",
-              user="YOUR_USERNAME",
-              password="YOUR_PASSWORD",
+              account="RQVFAHA-BQ57083",
+              user="VASUDEVASFD1",
+              password="Vasudeva.sfd@2",
               role="ACCOUNTADMIN",
               warehouse="COMPUTE_WH",
               database="MY_DB",

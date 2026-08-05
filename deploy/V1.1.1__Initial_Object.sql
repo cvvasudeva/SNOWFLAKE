@@ -13,10 +13,10 @@ CREATE OR REPLACE TABLE EMPLOYEE
 -- Insert Sample Records
 INSERT INTO EMPLOYEE (EMP_ID, EMP_NAME, SALARY)
 VALUES
-    (100088, 'John', 50000),
-    (1029987, 'David', 60000),
-    (1038675, 'Smith', 55000),
-    (1074456, 'Alice', 70000),
+    (10, 'John', 50000),
+    (102, 'David', 60000),
+    (103, 'Smith', 55000),
+    (107, 'Alice', 70000),
     (1075675, 'Robert', 65000),
     (1076654, 'Emma', 72000),
     (1077234, 'Michael', 58000),

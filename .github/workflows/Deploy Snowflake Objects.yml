@@ -29,11 +29,17 @@ jobs:
 
         run: |
           snow sql \
-            -a RQVFAHA-BQ57083 \
-            -u VASUDEVASFD1 \
-            -p password "Vasudeva.sfd@2" \
-            -r ACCOUNTADMIN \
-            -w COMPUTE_WH \
-            -d MY_DB \
-            -s MY_SCHEMA \
-            -f sql/create_emp_practice_table.sql
+            --account "$SNOWSQL_ACCOUNT" \
+            --user "$SNOWSQL_USER" \
+            --password "$SNOWSQL_PWD" \
+            --query "
+              USE ROLE $SNOWSQL_ROLE;
+              USE WAREHOUSE $SNOWSQL_WAREHOUSE;
+              USE DATABASE $SNOWSQL_DATABASE;
+              USE SCHEMA $SNOWSQL_SCHEMA;
+              "
+          snow sql \
+              --account "$SNOWSQL_ACCOUNT" \
+              --user "$SNOWSQL_USER" \
+              --password "$SNOWSQL_PWD" \
+              --filename sql/create_emp_practice_table.sql

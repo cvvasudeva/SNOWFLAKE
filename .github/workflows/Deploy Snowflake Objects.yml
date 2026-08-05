@@ -42,4 +42,4 @@ jobs:
           SNOWFLAKE_SCHEMA: ${{ secrets.SNOWFLAKE_SCHEMA }}
 
         run: |
-          python scripts/deploy.py
+          python deploy/deploy.py

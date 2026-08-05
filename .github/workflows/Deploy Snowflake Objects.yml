@@ -13,7 +13,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: snowflakedb/snowflake-cli-action@v1
+      - uses: snowflakedb/snowflake-cli-action@v3
+        with:
+         cli-version: "3.16"
 
       - name: Execute SQL
         env:

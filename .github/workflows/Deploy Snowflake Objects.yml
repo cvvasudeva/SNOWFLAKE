@@ -1,0 +1,56 @@
+name: Deploy Snowflake Objects
+
+on:
+  push:
+    branches:
+      - main
+      - dev
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install Snowflake Connector
+        run: |
+          python -m pip install --upgrade pip
+          pip install snowflake-connector-python
+
+      - name: Deploy SQL File
+        run: |
+          python << 'EOF'
+          import snowflake.connector
+
+          conn = snowflake.connector.connect(
+              account="RQVFAHA-BQ57083",
+              user="VASUDEVASFD1",
+              password="Vasudeva.sfd@2",
+              role="ACCOUNTADMIN",
+              warehouse="COMPUTE_WH",
+              database="MY_DB",
+              schema="MY_SCHEMA"
+          )
+
+          cur = conn.cursor()
+
+          with open("deploy/V1.1.1__Initial_Object.sql", "r") as f:
+              sql_script = f.read()
+
+          for statement in sql_script.split(";"):
+              statement = statement.strip()
+              if statement:
+                  cur.execute(statement)
+
+          print("Snowflake deployment completed successfully.")
+
+          cur.close()
+          conn.close()
+          EOF

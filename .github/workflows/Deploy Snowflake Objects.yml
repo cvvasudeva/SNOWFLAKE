@@ -30,13 +30,13 @@ jobs:
           import snowflake.connector
 
           conn = snowflake.connector.connect(
-              account="RQVFAHA-BQ57083",
+              account="ZPMSXAV-QOB82051",
               user="VASUDEVASFD1",
               password="Vasudeva.sfd@2",
               role="ACCOUNTADMIN",
               warehouse="COMPUTE_WH",
-              database="MY_DB",
-              schema="MY_SCHEMA"
+              database="DEMO_DB",
+              schema="DEMO_SCHEMA"
           )
 
           cur = conn.cursor()

@@ -10,9 +10,9 @@ df.columns = [col.upper() for col in df.columns]
 # 2. Establish connection to Snowflake
 connection=sf.connect(user='vasudevasfd1',
                       password='Vasudeva.sfd@2',
-                      account='VSVIQPA-PNB64616',
+                      account='ZPMSXAV-QOB82051',
                       database='MYDB',
-                      schema='MYSCHEMA'
+                      schema='PUBLIC'
                       )
 print(df)
 try:
